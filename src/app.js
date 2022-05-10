@@ -8,7 +8,17 @@ const app = express();
 const router = express.Router();
 
 //Conexão Banco de Dados
-mongoose.connect('mongodb+srv://igormoraes90:igor1990@balta.ujnuq.mongodb.net/test');
+mongoose.connect(
+    process.env.MONGODB_URI,
+    { 
+        useUnifiedTopology: true, 
+        useNewUrlParser: true, 
+    }, (err) => {
+        if (err) 
+            return console.log("Error: ", err);
+        console.log("MongoDB Connection -- Ready state is:", mongoose.connection.readyState);
+    }
+);
 
 //Carrega as Models
 const Produto = require('./models/produto');
