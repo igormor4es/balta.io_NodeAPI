@@ -2,39 +2,25 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const app = express();
 const router = express.Router();
 
+//Conexão Banco de Dados
+mongoose.connect('mongodb+srv://igormoraes90:igor1990@balta.ujnuq.mongodb.net/test');
+
+//Carrega as Models
+const Produto = require('./models/produto');
+
+//Carrega as Rotas
+const indexRoute = require('./routes/index-route');
+const productRoute = require('./routes/product-route');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const route = router.get('/', (req, res, next) => {
-    res.status(200).send({
-        title: "Node Store API",
-        version: "0.0.2"
-    });
-});
-
-const create = router.post('/', (req, res, next) => {
-    res.status(201).send(req.body);
-});
-
-const put = router.put('/:id', (req, res, next) => {
-    let id = req.params.id;
-    res.status(201).send({ 
-        id: id , 
-        item: req.body 
-    });
-});
-
-const del = router.delete('/', (req, res, next) => {
-    res.status(200).send(req.body);
-});
-
-app.use('/', route);
-app.use('/produtos', create);
-app.use('/produtos', put);
-app.use('/produtos', del);
+app.use('/', indexRoute);
+app.use('/produtos', productRoute);
 
 module.exports = app;
