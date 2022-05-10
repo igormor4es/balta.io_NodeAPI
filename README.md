@@ -46,3 +46,7 @@ Neste curso vamos unir a popularidade das APIs com a popularidade do JavaScript 
 * Autorização
 * Habilitando CORS
 * Publicando a API
+
+### Conexão MongoDB
+* Criar um arquivo .env na raiz com a string de conexão do banco.
+* MONGODB_URI="AQUI VAI A STRING DE CONEXÃO"
