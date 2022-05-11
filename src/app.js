@@ -3,13 +3,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+const config = require('./config');
 const app = express();
 const router = express.Router();
 
 //Conexão Banco de Dados
 mongoose.connect(
-    process.env.MONGODB_URI,
+    //process.env.MONGODB_URI,
+    config.connectionString,
     { 
         useUnifiedTopology: true, 
         useNewUrlParser: true, 
@@ -22,15 +23,22 @@ mongoose.connect(
 
 //Carrega as Models
 const Produto = require('./models/produto');
+const Cliente = require('./models/cliente');
+const Ordem = require('./models/ordem');
 
 //Carrega as Rotas
-const indexRoute = require('./routes/index-route');
-const productRoute = require('./routes/product-route');
+const rotaIndex = require('./routes/index-route');
+const rotaProduto = require('./routes/produto-route');
+const rotaCliente = require('./routes/cliente-route');
+const rotaOrdem = require('./routes/ordem-route');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use('/', indexRoute);
-app.use('/produtos', productRoute);
+//Inicializa as Rotas
+app.use('/', rotaIndex);
+app.use('/produtos', rotaProduto);
+app.use('/clientes', rotaCliente);
+app.use('/pedidos', rotaOrdem);
 
 module.exports = app;
