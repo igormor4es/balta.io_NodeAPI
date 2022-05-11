@@ -6,7 +6,7 @@ const Produto = mongoose.model('Produto');
 exports.get = async() => {
     const res = await Produto.find({
         active : true
-    }, 'titulo preco slug');
+    }, 'titulo descricao preco slug tags imagem');
     return res;
 }
 

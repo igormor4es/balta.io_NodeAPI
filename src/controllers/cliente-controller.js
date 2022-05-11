@@ -4,6 +4,7 @@ const ValidationContract = require('../validators/fluent-validator');
 const repository = require('../repositories/cliente-repository');
 const md5 = require('md5');
 const emailService = require('../services/email-service');
+const authService = require('../services/auth-service');
 
 exports.post = async(req, res, next) => {
     try {
@@ -46,6 +47,75 @@ exports.get = async(req, res, next) => {
         MensagemErro(e.message, res);
     }
 }
+
+exports.authenticate = async(req, res, next) => {
+    try {
+
+        const cliente = await repository.authenticate({
+            email: req.body.email,
+            senha: md5(req.body.senha + global.SALT_KEY)
+        });
+
+        if (!cliente) {
+            res.status(404).send({ message: 'Usuário ou senha inválidos!' });
+            return;
+        }
+
+        const token = await authService.generateToken({
+            id: cliente._id,
+            email: cliente.email,
+            nome: cliente.nome,
+            //roles: cliente.roles
+        });
+
+        res.status(201).send({
+            token: token,
+            data: {
+                email: cliente.email,
+                nome: cliente.nome
+            }
+        });
+    } catch (e) {
+        res.status(500).send({
+            message: 'Falha ao processar sua requisição!'
+        });
+    }
+};
+
+exports.refreshToken = async(req, res, next) => {
+    try {
+        const token = req.body.token || req.query.token || req.headers['x-access-token'];
+        const data = await authService.decodeToken(token);
+
+        const cliente = await repository.getById(data.id);
+
+        if (!cliente) {
+            res.status(404).send({
+                message: 'Cliente não encontrado'
+            });
+            return;
+        }
+
+        const tokenData = await authService.generateToken({
+            id: cliente._id,
+            email: cliente.email,
+            nome: cliente.nome,
+            //roles: cliente.roles
+        });
+
+        res.status(201).send({
+            token: token,
+            data: {
+                email: cliente.email,
+                nome: cliente.nome
+            }
+        });
+    } catch (e) {
+        res.status(500).send({
+            message: 'Falha ao processar sua requisição!'
+        });
+    }
+};
 
 function MensagemErro (msg, res) {
     res.status(500).send({
