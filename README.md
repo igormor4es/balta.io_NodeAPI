@@ -50,3 +50,12 @@ Neste curso vamos unir a popularidade das APIs com a popularidade do JavaScript 
 ### Conexão MongoDB
 * Criar um arquivo .env na raiz com a string de conexão do banco.
 * MONGODB_URI="AQUI VAI A STRING DE CONEXÃO"
+
+### Conexão SendGrid
+* Criar uma conta em https://sendgrid.com/ para o envio de email's gratuitos.
+* Com o arquivo .env já criado, adicionar: SENDGRID_KEY='AQUI VAI SUA KEY'
+
+### Conexão AzureBlob
+* Criar uma conta em https://azure.microsoft.com/pt-br/services/storage/blobs/ para o armazenamento de imagens.
+* Com o arquivo .env já criado, adicionar: AZURE_BLOB_URI='AQUI VAI A STRING DE CONEXÃO'
+* OBS: Deixei desativado no código, pois não quis criar a conta, preferi armazenar a base64 da imagem direto no banco.
