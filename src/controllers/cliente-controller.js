@@ -23,7 +23,8 @@ exports.post = async(req, res, next) => {
         await repository.create({
             nome: req.body.nome,
             email: req.body.email,
-            senha: md5(req.body.senha + global.SALT_KEY)
+            senha: md5(req.body.senha + global.SALT_KEY),
+            roles: ['user']
         });
 
         emailService.send(
@@ -65,7 +66,7 @@ exports.authenticate = async(req, res, next) => {
             id: cliente._id,
             email: cliente.email,
             nome: cliente.nome,
-            //roles: cliente.roles
+            roles: cliente.roles
         });
 
         res.status(201).send({
@@ -100,7 +101,7 @@ exports.refreshToken = async(req, res, next) => {
             id: cliente._id,
             email: cliente.email,
             nome: cliente.nome,
-            //roles: cliente.roles
+            roles: cliente.roles
         });
 
         res.status(201).send({

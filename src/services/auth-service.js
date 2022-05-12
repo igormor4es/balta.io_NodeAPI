@@ -41,14 +41,14 @@ exports.isAdmin = function (req, res, next) {
         jwt.verify(token, global.SALT_KEY, function (error, decoded) {
             if (error) {
                 res.status(401).json({
-                    message: 'Token Inválido'
+                    message: 'Token Inválido!'
                 });
             } else {
                 if (decoded.roles.includes('admin')) {
                     next();
                 } else {
                     res.status(403).json({
-                        message: 'Esta funcionalidade é restrita para administradores'
+                        message: 'Esta funcionalidade é restrita para administradores.'
                     });
                 }
             }
