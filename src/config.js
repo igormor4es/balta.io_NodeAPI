@@ -3,6 +3,6 @@ global.EMAIL_TMPL = 'Olá, <strong>{0}</strong>, seja bem vindo à Node Store!';
 
 module.exports = {
     connectionString: process.env.MONGODB_URI,
-    sendgridKey: process.env.SENGRID_KEY,
+    sendgridKey: process.env.SENDGRID_KEY,
     containerConnectionString: process.env.AZURE_BLOB_URI
 }
